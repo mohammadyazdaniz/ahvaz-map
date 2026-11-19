@@ -34,7 +34,7 @@ function save(){
 function selectYear(){
  const y=year.value;
  if(historyLayer)map.removeLayer(historyLayer);
- historyLayer=L.tileLayer("tiles/"+y+"/{z}/{x}/{y}.webp",{pane:"historical",bounds:bounds[y],minZoom:12,maxNativeZoom:y==="1335"?18:17,maxZoom:19,noWrap:true}).addTo(map);
+ historyLayer=L.tileLayer("tiles-lossless/"+y+"/{z}/{x}/{y}.png",{pane:"historical",bounds:bounds[y],minZoom:12,maxNativeZoom:y==="1335"?18:17,maxZoom:19,noWrap:true}).addTo(map);
  element("accuracy").textContent="خطای مکانی RMS حدود "+({"1335":"۳۵","1960":"۸۸","1971":"۱۳۲"}[y])+" متر";
  updateClip();save();
 }
@@ -42,3 +42,4 @@ map.on("viewreset move resize zoom",updateClip);map.on("moveend",save);
 year.onchange=selectYear;split.oninput=()=>{updateClip();save();};
 element("extent").onclick=()=>map.fitBounds(bounds[year.value],{padding:[32,70]});
 selectYear();
+
