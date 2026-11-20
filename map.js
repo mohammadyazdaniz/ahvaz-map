@@ -15,7 +15,7 @@ const layers = {
   streets: L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}),
   satellite: L.tileLayer('https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key=LudSN1LpSzzj7M6BuS03', {maxNativeZoom: 19, maxZoom: 19, attribution: '&copy; <a href="https://www.maptiler.com/copyright/">MapTiler</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'})
 };
-let current = layers[modern.value].addTo(map);
+let current = layers[modern.value];
 let historical;
 function makeHistorical() {
  const y = year.value;
@@ -23,15 +23,53 @@ function makeHistorical() {
 }
 historical = makeHistorical().addTo(map);
 const comparison = L.control.sideBySide(current, historical).addTo(map);
-document.querySelector('.leaflet-sbs-range').setAttribute('aria-label', 'جابجایی مرز نقشهٔ تاریخی و وضع موجود');
+const divider = document.querySelector('.leaflet-sbs-range');
+divider.step = '0.01';
+const split = params.get('split');
+if (split && Number.isFinite(Number(split))) {
+  divider.value = String(Number(split) / 100);
+  divider.dispatchEvent(new Event('input'));
+}
+divider.addEventListener('change', save);
+divider.setAttribute('aria-label', 'جابجایی مرز نقشهٔ تاریخی و وضع موجود');
 function save() {
  const c = map.getCenter();
- const p = new URLSearchParams({view: [c.lat.toFixed(5), c.lng.toFixed(5), map.getZoom()].join(','), year: year.value, modern: modern.value});
+ const p = new URLSearchParams({view: [c.lat.toFixed(5), c.lng.toFixed(5), map.getZoom()].join(','), year: year.value, modern: modern.value, split: Math.round(Number(divider.value) * 100)});
  history.replaceState(null, '', '#' + p);
 }
 function updateAccuracy() { element('accuracy').textContent = 'خطای مکانی RMS حدود ' + ({'1335':'۳۵','1960':'۸۸','1971':'۱۳۲'}[year.value]) + ' متر'; }
 year.onchange = () => { map.removeLayer(historical); historical = makeHistorical().addTo(map); comparison.setRightLayers(historical); updateAccuracy(); save(); };
-modern.onchange = () => { map.removeLayer(current); current = layers[modern.value].addTo(map); comparison.setLeftLayers(current); element('maptiler-logo').hidden = modern.value !== 'satellite'; save(); };
+const statusMessage = element('status');
+function selectModern(name, message = '') {
+  map.removeLayer(current);
+  modern.value = name;
+  current = layers[name];
+  current.addTo(map);
+  comparison.setLeftLayers(current);
+  element('maptiler-logo').hidden = name !== 'satellite';
+  statusMessage.textContent = message;
+  save();
+}
+modern.onchange = () => selectModern(modern.value);
+
+for (const [name, layer] of Object.entries(layers)) {
+  let failed = 0;
+  let loaded = 0;
+  layer.on('loading', () => { failed = 0; loaded = 0; });
+  layer.on('tileerror', () => { failed++; });
+  layer.on('tileload', () => { loaded++; });
+  layer.on('load', () => {
+    if (current !== layer) return;
+    if (failed && name === 'satellite' && !loaded) {
+      selectModern('streets', 'تصویر ماهواره‌ای بارگیری نشد. نقشهٔ معابر انتخاب شد.');
+    } else if (failed) {
+      statusMessage.textContent = 'برخی قسمت‌های نقشه بارگیری نشدند.';
+    } else if (statusMessage.textContent === 'برخی قسمت‌های نقشه بارگیری نشدند.') {
+      statusMessage.textContent = '';
+    }
+  });
+}
+current.addTo(map);
 element('extent').onclick = () => map.fitBounds(bounds[year.value], {padding: [32, 70]});
 element('maptiler-logo').hidden = modern.value !== 'satellite';
 map.on('moveend', save);

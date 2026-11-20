@@ -1,12 +1,16 @@
 <!doctype html><html lang="fa" dir="rtl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>اهواز | دیروز و امروز</title><link rel="stylesheet" href="vendor/leaflet.css">
 <style>
 *{box-sizing:border-box}body{margin:0;font:15px Tahoma,sans-serif;color:#153e35}#map{position:fixed;inset:0;background:#e3dfd1;direction:ltr}.panel{position:fixed;z-index:600;background:#fffdf4f5;box-shadow:0 2px 18px #18362c33;border:1px solid #d6d1c0;border-radius:12px;padding:10px 12px}.historical{top:14px;right:14px}.present{top:14px;left:60px}h1{font-size:17px;margin:0 0 8px}label{display:block;font-weight:bold;margin-bottom:5px}button,select{font:inherit;color:inherit;background:#fffcf2;border:1px solid #a7b1a5;border-radius:6px;padding:5px;cursor:pointer}small{display:block;margin-top:6px;color:#42564e}.leaflet-control-attribution{max-width:80vw}#maptiler-logo{position:fixed;left:10px;bottom:10px;z-index:600}#maptiler-logo img{width:100px}@media(max-width:600px){.panel{top:10px;padding:7px;max-width:45vw}.historical{right:8px}.present{left:50px}h1{font-size:14px}select{max-width:100%}small{font-size:10px}}
+#map{background:repeating-linear-gradient(135deg,#e9e6da 0 6px,#dad7ca 6px 8px)}
+#map .leaflet-sbs-range:focus-visible::-webkit-slider-thumb{outline:3px solid #154ee8;outline-offset:3px}
+#map .leaflet-sbs-range:focus-visible::-moz-range-thumb{outline:3px solid #154ee8;outline-offset:3px}
+#status{max-width:18em}#status:empty{display:none}
 </style>
 <style>
 @media(max-width:600px){.present{max-width:calc(50vw - 54px)}.historical{max-width:calc(50vw - 12px)}.panel select{width:100%}.historical button{margin-top:5px}}
 </style>
 <div id="map" aria-label="نقشهٔ مقایسه‌ای اهواز"></div>
-<section class="panel historical"><h1>اهواز، دیروز و امروز</h1><label for="year">تاریخی</label><select id="year"><option value="1335">عکس هوایی ۱۳۳۵</option><option value="1960">نقشهٔ ۱۹۶۰ میلادی</option><option value="1971">نقشهٔ ۱۹۷۱ میلادی</option></select> <button id="extent">نمای کل</button><small id="accuracy"></small></section>
-<section class="panel present"><label for="modern">وضع موجود</label><select id="modern"><option value="satellite">تصویر ماهواره‌ای</option><option value="streets">نقشهٔ معابر</option></select></section>
+<section class="panel historical"><h1>اهواز، دیروز و امروز</h1><label for="year">تاریخی</label><select id="year"><option value="1335">عکس هوایی ۱۳۳۵</option><option value="1960">نقشهٔ ۱۹۶۰ میلادی</option><option value="1971">نقشهٔ ۱۹۷۱ میلادی</option></select> <button id="extent">نمای کل</button><small id="accuracy"></small><small>هاشور: بدون تصویر تاریخی</small></section>
+<section class="panel present"><label for="modern">وضع موجود</label><select id="modern"><option value="satellite">تصویر ماهواره‌ای</option><option value="streets">نقشهٔ معابر</option></select><small id="status" role="status"></small></section>
 <a id="maptiler-logo" href="https://www.maptiler.com/" target="_blank" rel="noopener noreferrer"><img src="https://api.maptiler.com/resources/logo.svg" alt="MapTiler"></a>
 <script src="vendor/leaflet.js"></script><script src="vendor/leaflet-side-by-side.min.js"></script><script src="bounds.js"></script><script src="map.js"></script></html>
