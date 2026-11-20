@@ -8,13 +8,27 @@ map.attributionControl.addAttribution(
 );
 const params = new URLSearchParams(location.hash.slice(1));
 if (Object.hasOwn(bounds, params.get('year'))) year.value = params.get('year');
-if (['streets', 'satellite'].includes(params.get('modern'))) modern.value = params.get('modern');
+
 const [lat, lon, zoom] = (params.get('view') || '').split(',').map(Number);
 map.setView(lat > 31 && lat < 32 && lon > 48 && lon < 49 && zoom >= 12 && zoom <= 19 ? [lat, lon] : [31.3238, 48.6764], zoom >= 12 && zoom <= 19 ? zoom : 16);
+function sentinelMosaic(year) {
+  return L.tileLayer(
+    `https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-${year}_3857/default/g/{z}/{y}/{x}.jpg`,
+    {
+      maxNativeZoom: 14,
+      maxZoom: 19,
+      attribution: `Sentinel-2 cloudless © <a href="https://maps.eox.at/">EOX</a> · Contains modified Copernicus Sentinel data ${year} · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>`
+    }
+  );
+}
+
 const layers = {
+  sentinel2025: sentinelMosaic(2025),
+  sentinel2024: sentinelMosaic(2024),
   streets: L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}),
   satellite: L.tileLayer('https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key=LudSN1LpSzzj7M6BuS03', {maxNativeZoom: 19, maxZoom: 19, attribution: '&copy; <a href="https://www.maptiler.com/copyright/">MapTiler</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'})
 };
+if (Object.hasOwn(layers, params.get('modern'))) modern.value = params.get('modern');
 let current = layers[modern.value];
 let historical;
 function makeHistorical() {
@@ -60,7 +74,7 @@ for (const [name, layer] of Object.entries(layers)) {
   layer.on('tileload', () => { loaded++; });
   layer.on('load', () => {
     if (current !== layer) return;
-    if (failed && name === 'satellite' && !loaded) {
+    if (failed && name !== 'streets' && !loaded) {
       selectModern('streets', 'تصویر ماهواره‌ای بارگیری نشد. نقشهٔ معابر انتخاب شد.');
     } else if (failed) {
       statusMessage.textContent = 'برخی قسمت‌های نقشه بارگیری نشدند.';
