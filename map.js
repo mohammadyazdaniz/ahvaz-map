@@ -70,6 +70,7 @@ const statusMessage = element('status');
 function selectModern(name, message = '') {
   map.removeLayer(current);
   modern.value = name;
+  element('retry-layer').hidden = true;
   current = layers[name];
   current.addTo(map);
   comparison.setLeftLayers(current);
@@ -77,6 +78,11 @@ function selectModern(name, message = '') {
   statusMessage.textContent = message;
   save();
 }
+element('retry-layer').onclick = () => {
+  element('retry-layer').hidden = true;
+  statusMessage.textContent = 'در حال دریافت تصویر…';
+  current.redraw();
+};
 modern.onchange = () => selectModern(modern.value);
 
 for (const [name, layer] of Object.entries(layers)) {
@@ -87,11 +93,17 @@ for (const [name, layer] of Object.entries(layers)) {
   layer.on('tileload', () => { loaded++; });
   layer.on('load', () => {
     if (current !== layer) return;
+    if (failed && name === 'mapbox' && !loaded) {
+      statusMessage.textContent = 'تصویر مپ‌باکس دریافت نشد. کمی بعد دوباره تلاش کنید یا لایهٔ دیگری انتخاب کنید.';
+      element('retry-layer').hidden = false;
+      return;
+    }
+    element('retry-layer').hidden = true;
     if (failed && name !== 'streets' && !loaded) {
       selectModern('streets', 'تصویر ماهواره‌ای بارگیری نشد. نقشهٔ معابر انتخاب شد.');
     } else if (failed) {
       statusMessage.textContent = 'برخی قسمت‌های نقشه بارگیری نشدند.';
-    } else if (statusMessage.textContent === 'برخی قسمت‌های نقشه بارگیری نشدند.') {
+    } else if (name === 'mapbox' || statusMessage.textContent === 'برخی قسمت‌های نقشه بارگیری نشدند.') {
       statusMessage.textContent = '';
     }
   });
