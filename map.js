@@ -41,6 +41,14 @@ if (MAPBOX_PUBLIC_TOKEN.startsWith('pk.')) {
     if (link) link.href = 'https://apps.mapbox.com/feedback/#/' + [center.lng, center.lat, map.getZoom()].join('/');
   });
 }
+if (ARCGIS_API_KEY.trim()) {
+  layers.esri = L.tileLayer('https://ibasemaps-api.arcgis.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}?token={token}', {
+    token: encodeURIComponent(ARCGIS_API_KEY.trim()),
+    maxZoom: 19,
+    attribution: '<a href="https://www.esri.com/">Powered by Esri</a> | Esri, Maxar, Earthstar Geographics, and the GIS User Community'
+  });
+  modern.add(new Option('تصویر ماهواره‌ای اِزری', 'esri'), modern.options[1]);
+}
 if (Object.hasOwn(layers, params.get('modern'))) modern.value = params.get('modern');
 let current = layers[modern.value];
 let historical;
