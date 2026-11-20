@@ -28,6 +28,19 @@ const layers = {
   streets: L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}),
   satellite: L.tileLayer('https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key=LudSN1LpSzzj7M6BuS03', {maxNativeZoom: 19, maxZoom: 19, attribution: '&copy; <a href="https://www.maptiler.com/copyright/">MapTiler</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'})
 };
+if (MAPBOX_PUBLIC_TOKEN.startsWith('pk.')) {
+  layers.mapbox = L.tileLayer('https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}{r}.jpg90?access_token={accessToken}', {
+    accessToken: MAPBOX_PUBLIC_TOKEN,
+    maxZoom: 19,
+    attribution: '<a href="https://www.mapbox.com/"><img src="vendor/mapbox-logo.svg" width="88" alt="Mapbox"></a> © <a href="https://www.mapbox.com/">Mapbox</a> © <a href="https://www.maxar.com/">Maxar</a> © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · <a id="mapbox-feedback" href="https://apps.mapbox.com/feedback/">Improve this map</a>'
+  });
+  modern.add(new Option('ماهواره‌ای Mapbox', 'mapbox'), modern.options[1]);
+  map.on('moveend layeradd layerremove', () => {
+    const link = element('mapbox-feedback');
+    const center = map.getCenter();
+    if (link) link.href = 'https://apps.mapbox.com/feedback/#/' + [center.lng, center.lat, map.getZoom()].join('/');
+  });
+}
 if (Object.hasOwn(layers, params.get('modern'))) modern.value = params.get('modern');
 let current = layers[modern.value];
 let historical;
