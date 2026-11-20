@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mohammadyazdaniz.github.io/ahvaz-map/sitemap.xml

@@ -1,16 +1,68 @@
-<!doctype html><html lang="fa" dir="rtl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>اهواز | دیروز و امروز</title><link rel="stylesheet" href="vendor/leaflet.css"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap">
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>نقشه تاریخی اهواز | مقایسه اهواز قدیم و امروز</title>
+<meta name="description" content="نقشهٔ تعاملی تاریخی اهواز: مشاهده و مقایسهٔ عکس هوایی سال ۱۳۳۵ و نقشه‌های ۱۹۶۰ و ۱۹۷۱ میلادی اهواز در کنار نقشه و تصاویر ماهواره‌ای امروزی شهر.">
+<meta name="keywords" content="نقشه تاریخی اهواز, اهواز قدیم, نقشه اهواز 1335, نقشه اهواز قدیم, عکس هوایی اهواز, تحول تاریخی شهر اهواز, Ahvaz historical map, Ahvaz old map">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#153e35">
+<link rel="canonical" href="https://mohammadyazdaniz.github.io/ahvaz-map/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="نقشه تاریخی اهواز | مقایسه اهواز قدیم و امروز">
+<meta property="og:description" content="نقشهٔ تعاملی تاریخی اهواز: مشاهده و مقایسهٔ نقشه و تصاویر تاریخی اهواز با نقشه و تصاویر امروزی شهر.">
+<meta property="og:url" content="https://mohammadyazdaniz.github.io/ahvaz-map/">
+<meta property="og:locale" content="fa_IR">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="نقشه تاریخی اهواز | مقایسه اهواز قدیم و امروز">
+<meta name="twitter:description" content="نقشهٔ تعاملی تاریخی اهواز: مشاهده و مقایسهٔ نقشه و تصاویر تاریخی اهواز با نقشه و تصاویر امروزی شهر.">
+<link rel="stylesheet" href="vendor/leaflet.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "نقشه تاریخی اهواز",
+  "alternateName": "Ahvaz Historical Map",
+  "url": "https://mohammadyazdaniz.github.io/ahvaz-map/",
+  "description": "نقشهٔ تعاملی تاریخی اهواز: مشاهده و مقایسهٔ نقشه و تصاویر تاریخی اهواز با نقشه و تصاویر امروزی شهر.",
+  "applicationCategory": "Map",
+  "operatingSystem": "Any",
+  "inLanguage": "fa",
+  "author": {
+    "@type": "Person",
+    "name": "Mohammad Yazdani",
+    "url": "https://www.linkedin.com/in/mohammad2001yazdani/"
+  }
+}
+</script>
 <style>
 *{box-sizing:border-box}body{margin:0;font:15px "Vazirmatn",Tahoma,sans-serif;color:#153e35}#map{position:fixed;inset:0;background:#e3dfd1;direction:ltr}.panel{position:fixed;z-index:600;background:#fffdf4f5;box-shadow:0 2px 18px #18362c33;border:1px solid #d6d1c0;border-radius:12px;padding:10px 12px}.historical{top:14px;right:14px}.present{top:14px;left:60px}h1{font-size:17px;margin:0 0 8px}label{display:block;font-weight:bold;margin-bottom:5px}button,select{font:inherit;color:inherit;background:#fffcf2;border:1px solid #a7b1a5;border-radius:6px;padding:5px;cursor:pointer}small{display:block;margin-top:6px;color:#42564e}.leaflet-control-attribution{max-width:80vw}#maptiler-logo{position:fixed;left:10px;bottom:10px;z-index:600}#maptiler-logo img{width:100px}@media(max-width:600px){.panel{top:10px;padding:7px;max-width:45vw}.historical{right:8px}.present{left:50px}h1{font-size:14px}select{max-width:100%}small{font-size:10px}}
 #map{background:repeating-linear-gradient(135deg,#e9e6da 0 6px,#dad7ca 6px 8px)}
 #map .leaflet-sbs-range:focus-visible::-webkit-slider-thumb{outline:3px solid #154ee8;outline-offset:3px}
 #map .leaflet-sbs-range:focus-visible::-moz-range-thumb{outline:3px solid #154ee8;outline-offset:3px}
 #status{max-width:18em}#status:empty{display:none}
-</style>
-<style>
+.about{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);z-index:600;max-width:min(92vw,46em);font-size:13px;max-height:min(50vh,420px);overflow:auto}
+.about summary{cursor:pointer;font-weight:bold;list-style:none}
+.about summary::-webkit-details-marker{display:none}
+.about h2{font-size:15px;margin:10px 0 6px}
+.about p{margin:8px 0 0;line-height:1.7}
 @media(max-width:600px){.present{max-width:calc(50vw - 54px)}.historical{max-width:calc(50vw - 12px)}.panel select{width:100%}.historical button{margin-top:5px}}
 </style>
+</head>
+<body>
 <div id="map" aria-label="نقشهٔ مقایسه‌ای اهواز"></div>
-<section class="panel historical"><h1>اهواز، دیروز و امروز</h1><label for="year">تاریخی</label><select id="year"><option value="1335">عکس هوایی ۱۳۳۵</option><option value="1960">نقشهٔ ۱۹۶۰ میلادی</option><option value="1971">نقشهٔ ۱۹۷۱ میلادی</option></select> <button id="extent">نمای کل</button><small id="accuracy"></small><small>هاشور: بدون تصویر تاریخی</small></section>
+<section class="panel historical"><h1>نقشه تاریخی اهواز، دیروز و امروز</h1><label for="year">تاریخی</label><select id="year"><option value="1335">عکس هوایی ۱۳۳۵</option><option value="1960">نقشهٔ ۱۹۶۰ میلادی</option><option value="1971">نقشهٔ ۱۹۷۱ میلادی</option></select> <button id="extent">نمای کل</button><small id="accuracy"></small><small>هاشور: بدون تصویر تاریخی</small></section>
 <section class="panel present"><label for="modern">وضع موجود</label><select id="modern"><option value="satellite">MapTiler Satellite</option><option value="sentinel2025">Sentinel-2 (2025)</option><option value="sentinel2016">Sentinel-2 (2016)</option><option value="streets">OpenStreetMap</option></select><small id="status" role="status"></small><button id="retry-layer" type="button" hidden>تلاش دوباره</button></section>
 <a id="maptiler-logo" href="https://www.maptiler.com/" target="_blank" rel="noopener noreferrer"><img src="https://api.maptiler.com/resources/logo.svg" alt="MapTiler"></a>
-<script src="vendor/leaflet.js"></script><script src="vendor/leaflet-side-by-side.min.js"></script><script src="bounds.js"></script><script src="config.js?v=esri1"></script><script src="map.js?v=esri1"></script></html>
+<details class="panel about">
+<summary>دربارهٔ نقشه تاریخی اهواز · About</summary>
+<h2>نقشه تاریخی اهواز؛ مقایسهٔ اهواز قدیم و امروز</h2>
+<p>این نقشهٔ تعاملی با هدف نمایش و بررسی تحول تاریخی شهر اهواز توسعه یافته است. در این پروژه می‌توان نقشه تاریخی اهواز، از جمله عکس هوایی سال ۱۳۳۵ و نقشه‌های ۱۹۶۰ و ۱۹۷۱ میلادی، را در کنار نقشه و تصاویر ماهواره‌ای امروزی شهر مشاهده و مقایسه کرد.</p>
+<p>این ابزار امکان بررسی تغییرات ساختار شهری اهواز، توسعهٔ محدودهٔ شهر، تغییرات شبکهٔ معابر و تحول بافت شهری را در طول زمان فراهم می‌کند. برای مقایسه، نوار جداکننده را به چپ و راست بکشید یا نقشهٔ تاریخی و وضع موجود را از منوهای بالا انتخاب کنید.</p>
+<p lang="en" dir="ltr">An interactive historical map of Ahvaz, Iran, comparing a 1956 (1335 SH) aerial photo and 1960/1971 maps with present-day satellite imagery and street maps.</p>
+</details>
+<script src="vendor/leaflet.js"></script><script src="vendor/leaflet-side-by-side.min.js"></script><script src="bounds.js"></script><script src="config.js?v=esri1"></script><script src="map.js?v=esri1"></script></body></html>
