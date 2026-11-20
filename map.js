@@ -3,7 +3,7 @@ const year = element('year'), modern = element('modern');
 const map = L.map('map', {minZoom: 12, maxZoom: 19, zoomAnimation: false});
 map.attributionControl.addAttribution(
   'Designed & Developed by ' +
-  '<a href="https://github.com/mohammadyazdaniz" target="_blank" rel="noopener noreferrer">Mohammad Yazdani</a>' +
+  '<a href="https://www.linkedin.com/in/mohammad2001yazdani/" target="_blank" rel="noopener noreferrer">Mohammad Yazdani</a>' +
   ' | <a href="https://github.com/mohammadyazdaniz/ahvaz-map" target="_blank" rel="noopener noreferrer">Map Source</a>'
 );
 const params = new URLSearchParams(location.hash.slice(1));
